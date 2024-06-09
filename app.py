@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/graphpapergen'
 
 RESULTS_FOLDER = 'results'
-MAX_DIR_SIZE = 100 * 1024 * 1024  # 100MB
+MAX_DIR_SIZE = 10 * 1024 * 1024
 
 if not os.path.exists(RESULTS_FOLDER):
     os.makedirs(RESULTS_FOLDER)
