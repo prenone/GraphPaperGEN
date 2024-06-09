@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Achille's Graph Paper Generator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .rectangle {
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            color: red;
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Achille's Graph Paper Generator</h1>
+        <form id="plotForm">
+            <div class="rectangle">
+                <div class="form-group">
+                    <label for="paper_size">Paper Size:</label>
+                    <select class="form-control" id="paper_size" name="paper_size" onchange="updatePaperSize()">
+                        <option value="A4_P">A4 (Portrait)</option>
+                        <option value="A4_L">A4 (Landscape)</option>
+                        <option value="A3_P">A3 (Portrait)</option>
+                        <option value="A3_L">A3 (Landscape)</option>
+                        <option value="Letter_P">Letter (Portrait)</option>
+                        <option value="Letter_L">Letter (Landscape)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (inches):</label>
+                    <input type="number" class="form-control" id="height" name="height" value="11.69" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="width">Width (inches):</label>
+                    <input type="number" class="form-control" id="width" name="width" value="8.27" step="0.01">
+                </div>
+            </div>
+
+            <div class="rectangle">
+                <div class="form-group">
+                    <label for="margin_left">Margin Left:</label>
+                    <input type="number" class="form-control" id="margin_left" name="margin_left" value="0.05"
+                        step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="margin_right">Margin Right:</label>
+                    <input type="number" class="form-control" id="margin_right" name="margin_right" value="0.95"
+                        step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="margin_top">Margin Top:</label>
+                    <input type="number" class="form-control" id="margin_top" name="margin_top" value="0.95"
+                        step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="margin_bottom">Margin Bottom:</label>
+                    <input type="number" class="form-control" id="margin_bottom" name="margin_bottom" value="0.05"
+                        step="0.01">
+                </div>
+            </div>
+
+            <div class="rectangle">
+                <div class="form-group">
+                    <label for="xscale">X Scale:</label>
+                    <select class="form-control" id="xscale" name="xscale">
+                        <option value="linear">Linear</option>
+                        <option value="log">Log</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="yscale">Y Scale:</label>
+                    <select class="form-control" id="yscale" name="yscale">
+                        <option value="linear">Linear</option>
+                        <option value="log">Log</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="rectangle">
+                <div class="form-group">
+                    <label for="x_min">X Min:</label>
+                    <input type="number" class="form-control" id="x_min" name="x_min" value="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="x_max">X Max:</label>
+                    <input type="number" class="form-control" id="x_max" name="x_max" value="10" step="1">
+                </div>
+                <div class="form-group">
+                    <label for="y_min">Y Min:</label>
+                    <input type="number" class="form-control" id="y_min" name="y_min" value="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="y_max">Y Max:</label>
+                    <input type="number" class="form-control" id="y_max" name="y_max" value="10" step="0.01">
+                </div>
+            </div>
+
+            <div class="rectangle">
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="grid" name="grid" checked>
+                        <label class="form-check-label" for="grid">Grid</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="grid_major_thicker_x"
+                            name="grid_major_thicker_x" checked>
+                        <label class="form-check-label" for="grid_major_thicker_x">Major Grid Thicker (X)</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="grid_major_thicker_y"
+                            name="grid_major_thicker_y" checked>
+                        <label class="form-check-label" for="grid_major_thicker_y">Major Grid Thicker (Y)</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="x_tiks_numbers" name="x_tiks_numbers"
+                            checked>
+                        <label class="form-check-label" for="x_tiks_numbers">Show X Ticks Numbers</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="y_tiks_numbers" name="y_tiks_numbers"
+                            checked>
+                        <label class="form-check-label" for="y_tiks_numbers">Show Y Ticks Numbers</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rectangle">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="Awesome title">
+                </div>
+                <div class="form-group">
+                    <label for="x_label">X Label:</label>
+                    <input type="text" class="form-control" id="x_label" name="x_label" value="Awesome x label">
+                </div>
+                <div class="form-group">
+                    <label for="y_label">Y Label:</label>
+                    <input type="text" class="form-control" id="y_label" name="y_label" value="Awesome y label">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="img_format">Image Format:</label>
+                <select class="form-control" id="img_format" name="img_format">
+                    <option value="png">PNG</option>
+                    <option value="pdf">PDF</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <button type="button" class="btn btn-custom" onclick="generatePlot()">Generate Graph Paper</button>
+                </div>
+                <div class="form-check form-check-inline">
+                    <button id="downloadButton" class="btn btn-custom" style="display:none;"
+                        onclick="downloadPlot()">Download</button>
+                </div>
+            </div>
+        </form>
+        <iframe id="preview" src="" frameborder="0"></iframe>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function updatePaperSize() {
+            const paperSize = document.getElementById('paper_size').value;
+            let width, height;
+
+            switch (paperSize) {
+                case 'A4_P':
+                    width = 8.27; height = 11.69; break;
+                case 'A4_L':
+                    width = 11.69; height = 8.27; break;
+                case 'A3_P':
+                    width = 11.69; height = 16.54; break;
+                case 'A3_L':
+                    width = 16.54; height = 11.69; break;
+                case 'Letter_P':
+                    width = 8.5; height = 11; break;
+                case 'Letter_L':
+                    width = 11; height = 8.5; break;
+            }
+
+            document.getElementById('width').value = width;
+            document.getElementById('height').value = height;
+        }
+
+        function generatePlot() {
+            const form = document.getElementById('plotForm');
+            const formData = new FormData(form);
+            const state = {};
+            formData.forEach((value, key) => {
+                if (key === 'grid' || key === 'grid_major_thicker_x' || key === 'grid_major_thicker_y' || key === 'x_tiks_numbers' || key === 'y_tiks_numbers') {
+                    state[key] = value === 'on';
+                } else {
+                    state[key] = isNaN(value) ? value : parseFloat(value);
+                }
+            });
+
+            const stateJson = JSON.stringify(state);
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/graphpapergen/api/gp_gen?state=${encodeURIComponent(stateJson)}`, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    const filename = response.filename;
+                    const preview = document.getElementById('preview');
+                    const downloadButton = document.getElementById('downloadButton');
+                    preview.src = `/graphpapergen/results/${filename}`;
+                    downloadButton.style.display = 'block';
+                    downloadButton.setAttribute('data-filename', filename);
+                } else {
+                    document.getElementById('result').innerText = 'Error: ' + xhr.statusText;
+                }
+            };
+            xhr.send();
+        }
+
+        function downloadPlot() {
+            const downloadButton = document.getElementById('downloadButton');
+            const filename = downloadButton.getAttribute('data-filename');
+            window.open(`/graphpapergen/results/${filename}`, '_blank');
+        }
+
+        // Initialize the form with the default paper size
+        updatePaperSize();
+    </script>
+</body>
+
+</html>

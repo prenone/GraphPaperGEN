@@ -1,0 +1,7 @@
+results
+__pycache__
+.devcontainer
+.github
+.dockerignore
+Dockerfile
+graphpapergen_image.tar

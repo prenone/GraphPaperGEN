@@ -1,0 +1,4 @@
+__pycache__
+results
+docker-compose.yml
+*.tar
