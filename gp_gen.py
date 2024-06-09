@@ -38,7 +38,7 @@ class gp_state:
 
 def gp_gen(state: gp_state, filename):
     # Set the page size
-    fig, ax = plt.subplots(figsize=(state.height, state.width))
+    fig, ax = plt.subplots(figsize=(state.width, state.height))
 
     # Set margins
     plt.subplots_adjust(left=state.margin_left, right=state.margin_right,
