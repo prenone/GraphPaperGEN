@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 import re
 
@@ -81,7 +82,14 @@ def gp_gen(state: gp_state, filename):
     ax.set_xlabel(state.x_label)
     ax.set_ylabel(state.y_label)
 
-    plt.savefig(filename)
+    if state.img_format == "pdf":
+        with PdfPages(filename) as pdf:
+            pdf.savefig(fig)
+            d = pdf.infodict()
+            d['Title'] = state.title
+            d['Creator'] = 'GraphPaperGen by Achille'
+    else:
+        plt.savefig(filename)
     plt.close()
 
 
