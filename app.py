@@ -16,9 +16,6 @@ MAX_DIR_SIZE = 10 * 1024 * 1024
 if not os.path.exists(RESULTS_FOLDER):
     os.makedirs(RESULTS_FOLDER)
 
-# Disable Flask logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
 
 def get_dir_size(path='.'):
     total_size = 0
